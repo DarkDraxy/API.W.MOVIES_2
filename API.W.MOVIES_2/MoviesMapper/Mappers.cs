@@ -1,13 +1,12 @@
 ﻿using API.W.MOVIES_2.DAL.Models;
 using API.W.MOVIES_2.DAL.Models.DTO;
 using AutoMapper;
-using System.Runtime;
 
 namespace API.W.MOVIES_2.MoviesMapper
 {
-    public class Mapper : Profile
+    public class Mappers : Profile
     {
-        protected Mapper()
+        public Mappers()
         {
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Category, CategoryCreateDto>().ReverseMap();
