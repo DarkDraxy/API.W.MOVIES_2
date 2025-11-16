@@ -27,9 +27,26 @@ namespace API.W.MOVIES_2.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> CreateCategoryAsync(Category category)
+        public async Task<CategoryDTO> CreateCategoryAsync(CategoryCreateDto categoryCreateDTO)
         {
-            throw new NotImplementedException();
+            //validar si la categoria ya existe
+            var categoryExists = await _categoryRepository.CategoryExistsByNameAsync(categoryCreateDTO.Name);
+            if (categoryExists)
+            {
+                throw new InvalidOperationException($"Ya existe una categoria con el nombre de '{categoryCreateDTO.Name}' ");
+            }
+
+            //mapear el DTO a la entidad
+            var categoryEntity = _mapper.Map<Category>(categoryCreateDTO);
+
+            //crear la categoria
+            var categoryCreated = await _categoryRepository.CreateCategoryAsync(categoryEntity);
+            if (!categoryCreated)
+            {
+                throw new Exception("Error al crear la categoria");
+            }
+
+            return _mapper.Map<CategoryDTO>(categoryEntity);
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)

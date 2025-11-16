@@ -1,4 +1,5 @@
-﻿using API.W.MOVIES_2.DAL.Models.DTO;
+﻿using API.W.MOVIES_2.DAL.Models;
+using API.W.MOVIES_2.DAL.Models.DTO;
 using API.W.MOVIES_2.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,37 @@ namespace API.W.MOVIES_2.Controllers
         {
             var categoriesDTO = await _categoryServices.GetCategoryAsync(id);
             return Ok(categoriesDTO);
+        }
+
+        [HttpPost(Name = "CreateCategoryAsyn")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<CategoryDTO>> CreateCategoryAsyn([FromBody] CategoryCreateDto categoryCreateDTO)
+        {
+            if (!ModelState.IsValid)
+            { 
+                return BadRequest(ModelState);
+            }
+            try 
+            {
+                var createdCategory = await _categoryServices.CreateCategoryAsync(categoryCreateDTO);
+                return CreatedAtRoute(
+                    "GetCategoryAsync", 
+                    new {id = createdCategory.Id} , 
+                    createdCategory);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("Ya existe"))
+            {
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
     }
 }

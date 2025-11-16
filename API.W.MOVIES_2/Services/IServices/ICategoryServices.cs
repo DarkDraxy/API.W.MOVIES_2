@@ -14,7 +14,7 @@ namespace API.W.MOVIES_2.Services.IServices
         Task<bool> CategoryExistsByNameAsync(string Name);//Me retorna true o false si existe la categoria por su Nombre
 
 
-        Task<bool> CreateCategoryAsync(Category category);//Me crea una nueva categoria
+        Task<CategoryDTO> CreateCategoryAsync(CategoryCreateDto categoryCreateDTO);//Me crea una nueva categoria
 
         Task<bool> UpdateCategoryAsync(Category category);//Me actualiza una categoria existente
 
