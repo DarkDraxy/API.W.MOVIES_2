@@ -19,9 +19,20 @@ namespace API.W.MOVIES_2.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ICollection<CategoryDTO>>> GetCategoriesAsyn()
-        { 
+        {
             var categories = await _categoryServices.GetCategoriesAsync();
             return Ok(categories);
+        }
+
+        [HttpGet("{id:int}", Name = "GetCategoryAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CategoryDTO>> GetCategoryAsyn(int id)
+        {
+            var categoriesDTO = await _categoryServices.GetCategoryAsync(id);
+            return Ok(categoriesDTO);
         }
     }
 }

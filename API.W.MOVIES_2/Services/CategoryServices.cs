@@ -17,39 +17,41 @@ namespace API.W.MOVIES_2.Services
             _mapper = mapper;
         }
 
-        public Task<bool> CategoryExistsByIdAsync(int Id)
+        public async Task<bool> CategoryExistsByIdAsync(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> CategoryExistsByNameAsync(string Name)
+        public async Task<bool> CategoryExistsByNameAsync(string Name)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> CreateCategoryAsync(Category category)
+        public async Task<bool> CreateCategoryAsync(Category category)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteCategoryAsync(int id)
+        public async Task<bool> DeleteCategoryAsync(int id)
         {
             throw new NotImplementedException();
         }
 
         public async Task<ICollection<CategoryDTO>> GetCategoriesAsync()
         {
-            var categories = await _categoryRepository.GetCategoriesAsync();//solo llamo al repositorio
+            var category = await _categoryRepository.GetCategoriesAsync();//solo llamo al repositorio
 
-            return _mapper.Map<ICollection<CategoryDTO>>(categories);//mapeo a DTO
+            return _mapper.Map<ICollection<CategoryDTO>>(category);//mapeo a DTO
         }
 
-        public Task<CategoryDTO> GetCategoryAsync(int Id)
+        public async Task<CategoryDTO> GetCategoryAsync(int Id)
         {
-            throw new NotImplementedException();
+            var categories = await _categoryRepository.GetCategoryAsync(Id);//solo llamo al repositorio
+
+            return _mapper.Map<CategoryDTO>(categories);//mapeo a DTO
         }
 
-        public Task<bool> UpdateCategoryAsync(Category category)
+        public async Task<bool> UpdateCategoryAsync(Category category)
         {
             throw new NotImplementedException();
         }
