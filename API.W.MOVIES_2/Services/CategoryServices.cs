@@ -11,9 +11,10 @@ namespace API.W.MOVIES_2.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
-        public CategoryServices(ICategoryRepository categoryRepository)
+        public CategoryServices(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         public Task<bool> CategoryExistsByIdAsync(int Id)
@@ -38,7 +39,7 @@ namespace API.W.MOVIES_2.Services
 
         public async Task<ICollection<CategoryDTO>> GetCategoriesAsync()
         {
-            var categories = _categoryRepository.GetCategoriesAsync();//solo llamo al repositorio
+            var categories = await _categoryRepository.GetCategoriesAsync();//solo llamo al repositorio
 
             return _mapper.Map<ICollection<CategoryDTO>>(categories);//mapeo a DTO
         }
