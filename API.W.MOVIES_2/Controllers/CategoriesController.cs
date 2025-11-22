@@ -42,7 +42,7 @@ namespace API.W.MOVIES_2.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<CategoryDTO>> CreateCategoryAsyn([FromBody] CategoryCreateDto categoryCreateDTO)
+        public async Task<ActionResult<CategoryDTO>> CreateCategoryAsyn([FromBody] CategoryCreateUpdateDto categoryCreateDTO)
         {
             if (!ModelState.IsValid)
             { 
@@ -55,6 +55,34 @@ namespace API.W.MOVIES_2.Controllers
                     "GetCategoryAsync", 
                     new {id = createdCategory.Id} , 
                     createdCategory);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("Ya existe"))
+            {
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("{id:int}",Name = "UpdateCategoryAsyn")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CategoryDTO>> UpdateCategoryAsyn([FromBody] CategoryCreateUpdateDto categoryCreateDTO, int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var updatedCategory = await _categoryServices.UpdateCategoryAsync(categoryCreateDTO, id);
+                return Ok(updatedCategory);
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("Ya existe"))
             {

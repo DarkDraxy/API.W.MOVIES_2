@@ -27,7 +27,7 @@ namespace API.W.MOVIES_2.Services
             throw new NotImplementedException();
         }
 
-        public async Task<CategoryDTO> CreateCategoryAsync(CategoryCreateDto categoryCreateDTO)
+        public async Task<CategoryDTO> CreateCategoryAsync(CategoryCreateUpdateDto categoryCreateDTO)
         {
             //validar si la categoria ya existe
             var categoryExists = await _categoryRepository.CategoryExistsByNameAsync(categoryCreateDTO.Name);
@@ -68,9 +68,37 @@ namespace API.W.MOVIES_2.Services
             return _mapper.Map<CategoryDTO>(categories);//mapeo a DTO
         }
 
-        public async Task<bool> UpdateCategoryAsync(Category category)
+        public async Task<CategoryDTO> UpdateCategoryAsync(CategoryCreateUpdateDto category, int id)
         {
-            throw new NotImplementedException();
+            //verificar si la categoria existe
+            var existingCategory = await _categoryRepository.GetCategoryAsync(id);
+            if (existingCategory == null)
+            {
+                throw new KeyNotFoundException($"No se encontro la categoria con Id {id}");
+            }
+
+            //verificar si el nombre de la categoria ya existe en otra categoria
+            var categoryExists = await _categoryRepository.CategoryExistsByNameAsync(category.Name);
+
+            if (categoryExists)
+            {
+                throw new InvalidOperationException($"Ya existe una categoria con el nombre de '{category.Name}' ");
+            }
+
+            //mapear los cambios del DTO a la entidad existente
+            _mapper.Map(category, existingCategory);
+
+            //actualizar la categoria
+            var categoryUpdated = await _categoryRepository.UpdateCategoryAsync(existingCategory);
+            if (!categoryUpdated)
+            {
+                throw new Exception("Error al actualizar la categoria");
+            }
+
+            return _mapper.Map<CategoryDTO>(existingCategory);
         }
+
+
+
     }
 }
