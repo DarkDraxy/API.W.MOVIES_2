@@ -94,5 +94,30 @@ namespace API.W.MOVIES_2.Controllers
             }
 
         }
+
+        [HttpDelete("{id:int}", Name = "DeleteCategoryAsyn")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteCategoryAsyn(int id)
+        {
+            
+            try
+            {
+                var deletedCategory = await _categoryServices.DeleteCategoryAsync(id);
+                return Ok(deletedCategory);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("No se encontró"))
+            {
+                return NotFound(new { message = ex.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
