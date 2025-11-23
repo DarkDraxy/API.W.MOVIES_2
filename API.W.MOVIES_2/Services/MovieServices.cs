@@ -82,8 +82,7 @@ namespace API.W.MOVIES_2.Services
             var existingMovie = await _MovieRepository.GetMovieAsync(id);
             if (existingMovie == null)
             {
-                return null;
-                //throw new KeyNotFoundException($"No se encontro la pelicula con Id {id}");
+                throw new InvalidOperationException($"No se encontró la Pelicula con Id {id}");
             }
 
             //mapear los cambios del DTO a la entidad existente

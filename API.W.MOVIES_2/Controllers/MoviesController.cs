@@ -84,11 +84,11 @@ namespace API.W.MOVIES_2.Controllers
             try
             {
                 var updatedMovie = await _MovieServices.UpdateMovieAsync(MovieCreateUpdateDTO, id);
-                if(updatedMovie==null)
-                {
-                    return NotFound(new { Message = $"No se encontro la pelicula con Id {id}" });
-                }
                 return Ok(updatedMovie);
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("No se encontró"))
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ namespace API.W.MOVIES_2.DAL.Models.DTO
         public string Name { get; set; }
 
         [Required(ErrorMessage = "La duración  de la pelicula es obligatoria.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La duración debe ser mayor que 0.")]
         public int Duration { get; set; }
         public string? Description { get; set; }
 
