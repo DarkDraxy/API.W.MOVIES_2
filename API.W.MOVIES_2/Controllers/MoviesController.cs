@@ -96,20 +96,20 @@ namespace API.W.MOVIES_2.Controllers
             }
 
         }
-        /*
-        [HttpDelete("{id:int}", Name = "DeleteCategoryAsyn")]
+        
+        [HttpDelete("{id:int}", Name = "DeleteMovieAsyn")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteCategoryAsyn(int id)
+        public async Task<ActionResult> DeleteMovieAsyn(int id)
         {
 
             try
             {
-                var deletedCategory = await _categoryServices.DeleteCategoryAsync(id);
-                return Ok(deletedCategory);
+                var deletedMovie = await _MovieServices.DeleteMovieAsync(id);
+                return Ok(deletedMovie);
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("No se encontró"))
             {
@@ -120,6 +120,6 @@ namespace API.W.MOVIES_2.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-        }*/
+        }
     }
 }
