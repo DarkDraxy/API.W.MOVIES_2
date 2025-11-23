@@ -5,7 +5,7 @@ namespace API.W.MOVIES_2.DAL.Models.DTO
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         [Required(ErrorMessage = "El nombre de la pelicula es obligatorio.")]
         [MaxLength(100, ErrorMessage = "El numero maximo de caracteres es de 100.")]

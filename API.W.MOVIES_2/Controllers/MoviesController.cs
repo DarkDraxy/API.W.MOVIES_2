@@ -68,14 +68,14 @@ namespace API.W.MOVIES_2.Controllers
             }
 
         }
-        /*
-        [HttpPut("{id:int}", Name = "UpdateCategoryAsyn")]
+        
+        [HttpPut("{id:int}", Name = "UpdateMovieAsyn")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CategoryDTO>> UpdateCategoryAsyn([FromBody] CategoryCreateUpdateDto categoryCreateDTO, int id)
+        public async Task<ActionResult<CategoryDTO>> UpdateMovieAsyn([FromBody] MovieCreateUpdateDto MovieCreateUpdateDTO, int id)
         {
             if (!ModelState.IsValid)
             {
@@ -83,12 +83,12 @@ namespace API.W.MOVIES_2.Controllers
             }
             try
             {
-                var updatedCategory = await _categoryServices.UpdateCategoryAsync(categoryCreateDTO, id);
-                return Ok(updatedCategory);
-            }
-            catch (InvalidOperationException ex) when (ex.Message.Contains("Ya existe"))
-            {
-                return Conflict(ex.Message);
+                var updatedMovie = await _MovieServices.UpdateMovieAsync(MovieCreateUpdateDTO, id);
+                if(updatedMovie==null)
+                {
+                    return NotFound(new { Message = $"No se encontro la pelicula con Id {id}" });
+                }
+                return Ok(updatedMovie);
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace API.W.MOVIES_2.Controllers
             }
 
         }
-
+        /*
         [HttpDelete("{id:int}", Name = "DeleteCategoryAsyn")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
