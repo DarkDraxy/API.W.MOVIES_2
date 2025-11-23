@@ -9,5 +9,7 @@ namespace API.W.MOVIES_2.DAL
         }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Movie> Movies { get; set; }
     }
 }
