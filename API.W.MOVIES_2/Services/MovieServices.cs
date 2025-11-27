@@ -84,6 +84,23 @@ namespace API.W.MOVIES_2.Services
             {
                 throw new InvalidOperationException($"No se encontró la Pelicula con Id {id}");
             }
+            //verificar que los campos no sean valores por defecto para no actualizarlos
+            if (Movie.Name.Equals("string")) 
+            {
+                Movie.Name = existingMovie.Name;
+            }
+            if(Movie.Duration==int.MaxValue)
+            {
+                Movie.Duration = existingMovie.Duration;
+            }
+            if (Movie.Description.Equals("string")) 
+            {
+                Movie.Description = existingMovie.Description;
+            }
+            if (Movie.Clasification.Equals("string")) 
+            {
+                Movie.Clasification = existingMovie.Clasification;
+            }
 
             //mapear los cambios del DTO a la entidad existente
             _mapper.Map(Movie, existingMovie);
